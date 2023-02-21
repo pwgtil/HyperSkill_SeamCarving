@@ -22,7 +22,11 @@ class View {
 
 
             val model = Model()
-            model.saveImageFile(model.drawIntensity(model.getOriginalImage(inputPath)!!), outputPath)
+
+            val test = model.testDijkstra(inputPath)
+            println()
+
+//            model.saveImageFile(model.drawIntensity(model.getOriginalImage(inputPath)!!), outputPath)
 
 //            model.saveImageFile(model.drawCross(model.createImage(width, height)), path)
 
