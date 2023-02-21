@@ -39,9 +39,17 @@ class Model {
     // Core public methods. Get path, get energy matrix, get adjacency matrix
     //------------------------------------------------------------------------------------------------------------------
     fun getPath(
-        energyMatrix: MutableList<MutableList<Double>>,
-        workMatrix: MutableList<MutableList<Node>>
+        energyMatrixIn: MutableList<MutableList<Double>>,
+        workMatrixIn: MutableList<MutableList<Node>>,
+        horizontalSeam: Boolean = false
     ): MutableList<Position>? {
+        // 0. Transpose if horizontal seam
+        var energyMatrix = energyMatrixIn
+        var workMatrix = workMatrixIn
+        if (horizontalSeam){
+            energyMatrix = transpose(energyMatrix)
+            workMatrix = transpose(workMatrixIn)
+        }
         // 1. Loop at every row of the image and calculate the lowest energy neighbors (top to bottom)
         for (y in 0 until energyMatrix.size) {
             val yPrim = y - 1
@@ -152,11 +160,11 @@ class Model {
     }
     //------------------------------------------------------------------------------------------------------------------
 
-    inline fun <reified T> transpose(xs: Array<Array<T>>): Array<Array<T>> {
+    private inline fun <reified T> transpose(xs: MutableList<MutableList<T>>): MutableList<MutableList<T>> {
         val cols = xs[0].size
         val rows = xs.size
-        return Array(cols) { j ->
-            Array(rows) { i ->
+        return MutableList(cols) { j ->
+            MutableList(rows) { i ->
                 xs[i][j]
             }
         }
